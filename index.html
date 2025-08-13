@@ -39,7 +39,7 @@ td, th { border: 1px solid #00ccff; padding: 6px 12px; }
 <tbody id="nodes"></tbody>
 </table>
 <script>
-const ESP32_IP = "http://192.168.1.42"; // replace with your ESP32's IP on Wi-Fi
+const ESP32_IP = "http://192.168.3.14"; // replace with your ESP32's IP on Wi-Fi
 
 function sendCmd(cmd) { fetch(`${ESP32_IP}/cmd?val=${cmd}`); }
 function setMode(mode) { fetch(`${ESP32_IP}/mode?val=${mode}`); }
@@ -58,4 +58,5 @@ updateStatus();
 </body>
 
 </html>
+
 
