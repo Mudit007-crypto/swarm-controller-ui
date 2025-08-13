@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Swarm Controller</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body { background-color: #0d0d0d; font-family: Arial; color: white; text-align: center; margin: 0; }
+h2 { margin-top: 10px; }
+button { background-color: #1a1a1a; border: 2px solid #00ccff; color: #00ccff; padding: 20px; font-size: 20px; margin: 10px; width: 80px; border-radius: 10px; }
+button:active { background-color: #00ccff; color: black; }
+.mode-btn { width: 100px; font-size: 16px; }
+table { margin: auto; border-collapse: collapse; }
+td, th { border: 1px solid #00ccff; padding: 6px 12px; }
+</style>
+</head>
+<body>
+<h2>Swarm Controller</h2>
+<div>
+  <button onclick="sendCmd(1)">↑</button>
+</div>
+<div>
+  <button onclick="sendCmd(3)">←</button>
+  <button onclick="sendCmd(5)">■</button>
+  <button onclick="sendCmd(4)">→</button>
+</div>
+<div>
+  <button onclick="sendCmd(2)">↓</button>
+</div>
+<div>
+  <button class="mode-btn" onclick="setMode(7)">OF</button>
+  <button class="mode-btn" onclick="setMode(8)">Manual</button>
+  <button class="mode-btn" onclick="setMode(6)">OA</button>
+</div>
+<hr>
+<h3>Mesh Status</h3>
+<p><b>Current Master:</b> <span id="master">-</span></p>
+<table>
+<tr><th>Node ID</th><th>RSSI</th></tr>
+<tbody id="nodes"></tbody>
+</table>
+<script>
+function sendCmd(cmd) { fetch(`/cmd?val=${cmd}`); }
+function setMode(mode) { fetch(`/mode?val=${mode}`); }
+async function updateStatus() {
+  let res = await fetch('/status');
+  let data = await res.json();
+  document.getElementById('master').innerText = data.master;
+  let html = '';
+  data.nodes.forEach(n => { html += `<tr><td>${n.id}</td><td>${n.rssi}</td></tr>`; });
+  document.getElementById('nodes').innerHTML = html;
+}
+setInterval(updateStatus, 2000);
+updateStatus();
+</script>
+</body>
+</html>
